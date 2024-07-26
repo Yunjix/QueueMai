@@ -2,11 +2,17 @@ import asyncio
 import json
 import os
 import discord
+import logging
 from discord.ext import commands
+from dotenv import load_dotenv
+
+
+load_dotenv("./utils/.env")
+TOKEN: str = os.getenv("TOKEN")
+
+logging.basicConfig(level=logging.INFO)
 
 # file readers
-with open("utils/token.0", "r", encoding="utf-8") as tf:
-    TOKEN = tf.read()  # reads the token
 with open("utils/owner_ids.0", "r", encoding="utf-8") as tf:
     OWNER_IDS = tf.read()  # recognizes who the owners of the bot is
 
@@ -59,6 +65,7 @@ async def on_guild_remove(guild):
 
 
 async def load_cogs():
+    print("Loading cogs...")
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
             try:
@@ -71,7 +78,6 @@ async def load_cogs():
 # main run function
 async def main():
     async with client:
-        print("Loading cogs...")
         await load_cogs()
         await client.start(TOKEN)
 
