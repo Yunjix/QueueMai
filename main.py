@@ -27,7 +27,7 @@ def get_server_prefix(client, message):
 
 # bot initializer
 client = commands.Bot(
-    command_prefix=get_server_prefix,
+    command_prefix=get_server_prefix, # default is "m!"
     intents=discord.Intents.all(),
     owner_ids=OWNER_IDS
 )
@@ -36,6 +36,11 @@ client = commands.Bot(
 # tells the bot is online
 @client.event
 async def on_ready():
+    try:
+        synced_commands = await client.tree.sync()
+        print(f"Synced {len(synced_commands)} commands.")
+    except Exception as e:
+        print(f"An error with syncing application commands has occured: {e}")
     print(f"Systems online! Logged in as {client.user}")
 
 
